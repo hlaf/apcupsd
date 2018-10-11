@@ -1,12 +1,8 @@
 
 EBUILD_ROOT = $(CURDIR)
-BUILD_ROOT = $(EBUILD_ROOT)/../BUILD/unix
+BUILD_ROOT = $(EBUILD_ROOT)/../BUILD
 
-#CC = /usr/bin/gcc44
-#CXX = /usr/bin/g++44
-CFLAGS = "-fPIC"
-
-MAKE_OPTS = -j4 CC=$(CC) CXX=$(CXX) CFLAGS=$(CFLAGS) VERBOSE=true
+MAKE_OPTS = CC=$(CC) CXX=$(CXX) VERBOSE=1
 
 VERBOSE = true
 ifeq ($(VERBOSE),true)
@@ -21,9 +17,8 @@ BUILD = @$(VMAKE) VERBOSE=$(VERBOSE) build_cmd
 
 Release  = FLAVOR=Release
 Debug    = FLAVOR=Debug
-Linux64  = PLAT=Linux64 CFG="--enable-64bit"
-Linux32  = PLAT=Linux32 CFLAGS="-m32"
-Macosx64 = PLAT=Macosx64 CFG="--enable-64bit"
+Linux64  = PLAT=Linux64 CFG=""
+Linux32  = PLAT=Linux32 CFLAGS="-m32" CXXFLAGS="-m32 -I$(BUILD_ROOT)/include" LDFLAGS="-m32"
 
 #----------------------------------------------------------------------
 # Global targets
@@ -41,39 +36,6 @@ Release_Linux64: prerequisites
 Release_Linux32: prerequisites
 	$(BUILD) $(Release) $(Linux32)
 
-Release_Macosx64: prerequisites
-	$(BUILD) $(Release) $(Macosx64)
-
-Release_Windows64: prerequisites
-	@INSTALL_PATH=$$(cygpath -w $(EBUILD_ROOT)/Release_Windows64) && \
-        LOG_FILE=$(EBUILD_ROOT)/Release_Windows64/buildlog.txt && \
-        rm -rf $$INSTALL_PATH && \
-        mkdir -p $$INSTALL_PATH && \
-        module load visual_studio/2013 && \
-        pushd $(BUILD_ROOT)/../win && \
-        cmd /C "vcvarsall x64 && nmake -nologo -f makefile.vc release install MACHINE=AMD64 OPTS=threads INSTALLDIR=$$INSTALL_PATH" $(REDIRECT) $$LOG_FILE && \
-        cp -r $(EBUILD_ROOT)/../BUILD $$INSTALL_PATH/src && \
-        cp $${INSTALL_PATH}/lib/tcl86t.lib $${INSTALL_PATH}/lib/tcl86.lib
-
-Release_Windows32: prerequisites
-	@INSTALL_PATH=$$(cygpath -w $(EBUILD_ROOT)/Release_Windows32) && \
-        LOG_FILE=$(EBUILD_ROOT)/Release_Windows32/buildlog.txt && \
-        rm -rf $$INSTALL_PATH && \
-        mkdir -p $$INSTALL_PATH && \
-        module load visual_studio/2013 && \
-        pushd $(BUILD_ROOT)/../win && \
-        cmd /C "vcvarsall x86 && nmake -nologo -f makefile.vc release install OPTS=threads INSTALLDIR=$$INSTALL_PATH" $(REDIRECT) $$LOG_FILE
-
-Debug_Windows32: prerequisites
-	@INSTALL_PATH=$$(cygpath -w $(EBUILD_ROOT)/Debug_Windows32) && \
-        LOG_FILE=$(EBUILD_ROOT)/Debug_Windows32/buildlog.txt && \
-        rm -rf $$INSTALL_PATH && \
-        mkdir -p $$INSTALL_PATH && \
-        module load visual_studio/2013 && \
-        pushd $(BUILD_ROOT)/../win && \
-        cmd /C "vcvarsall x86 && nmake -nologo -f makefile.vc release install OPTS=threads,symbols INSTALLDIR=$$INSTALL_PATH" $(REDIRECT) $$LOG_FILE
-
-
 clean:
 	@$(call clean_cmd)
 
@@ -88,17 +50,23 @@ build_cmd:
 define build_cmd
   INSTALL_PATH=$(EBUILD_ROOT)/$(FLAVOR)_$(PLAT) && \
   LOG_FILE=$${INSTALL_PATH}/buildlog.txt && \
+  HALPOLICYDIR="$${INSTALL_PATH}/usr/share/hal/fdi/policy/20thirdparty" && \
   rm -rf $$INSTALL_PATH && \
   mkdir -p $$INSTALL_PATH && \
   pushd $(BUILD_ROOT) >> /dev/null && \
-  ./configure --enable-threads --enable-shared $(CFG) \
-    --prefix=$$INSTALL_PATH $(REDIRECT) $$LOG_FILE && \
-  $(VMAKE) $(MAKE_OPTS) CFLAGS=$(CFLAGS) install $(REDIRECT) $$LOG_FILE
+  ./configure $(CFG) --enable-usb \
+    --datarootdir=$$INSTALL_PATH \
+    --prefix=$$INSTALL_PATH --exec-prefix=$$INSTALL_PATH \
+    --sbindir=$$INSTALL_PATH/sbin --sysconfdir=$$INSTALL_PATH/etc \
+    $(REDIRECT) $$LOG_FILE && \
+  $(VMAKE) $(MAKE_OPTS) \
+    HALPOLICYDIR=$${HALPOLICYDIR} \
+    CFLAGS=$(CFLAGS) install $(REDIRECT) $$LOG_FILE
 endef
 
 define clean_cmd
   @pushd $(BUILD_ROOT) >> /dev/null && \
-  if [ -f Makefile ]; then $(VMAKE) $(MAKE_OPTS) clean distclean; fi; \
+  if [ -f Makefile ]; then $(VMAKE) $(MAKE_OPTS) clean; fi; \
   $(POPD)
 endef
 
