@@ -10,6 +10,9 @@ RUN yum install -y glibc-devel.i686 libgcc.i686 libstdc++-devel.i686 ncurses-dev
 # Install some 64-bit development tools
 RUN yum install -y glibc-devel.x86_64 && yum clean all
 
+# Install RPM development tools
+RUN yum install -y rpm-build rpmdevtools && yum clean all
+
 # Install tools required for building apcupsd
 RUN yum install -y upstart sysvinit-tools man util-linux-ng && yum clean all
 
