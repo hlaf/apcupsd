@@ -50,18 +50,13 @@ build_cmd:
 define build_cmd
   INSTALL_PATH=$(EBUILD_ROOT)/$(FLAVOR)_$(PLAT) && \
   LOG_FILE=$${INSTALL_PATH}/buildlog.txt && \
-  HALPOLICYDIR="$${INSTALL_PATH}/usr/share/hal/fdi/policy/20thirdparty" && \
   rm -rf $$INSTALL_PATH && \
   mkdir -p $$INSTALL_PATH && \
   pushd $(BUILD_ROOT) >> /dev/null && \
   ./configure $(CFG) --enable-usb \
-    --datarootdir=$$INSTALL_PATH \
-    --prefix=$$INSTALL_PATH --exec-prefix=$$INSTALL_PATH \
-    --sbindir=$$INSTALL_PATH/sbin --sysconfdir=$$INSTALL_PATH/etc \
     $(REDIRECT) $$LOG_FILE && \
   $(VMAKE) $(MAKE_OPTS) \
-    HALPOLICYDIR=$${HALPOLICYDIR} \
-    CFLAGS=$(CFLAGS) install $(REDIRECT) $$LOG_FILE
+    CFLAGS=$(CFLAGS) DESTDIR=$$INSTALL_PATH install $(REDIRECT) $$LOG_FILE
 endef
 
 define clean_cmd

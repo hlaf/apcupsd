@@ -9,12 +9,12 @@ all-uninstall: uninstall-redhat
 install-redhat:
 	$(call DISTINST,RedHat)
    # unlink old rc script (if not doing a DESTDIR install)
-	$(call CHKCFG,del,$(sysconfdir)/rc.d/init.d/apcupsd)
+	$(call CHKCFG,del,/etc/rc.d/init.d/apcupsd)
    # install new rc script
-	$(call MKDIR,$(sysconfdir)/rc.d/init.d)
-	$(call INSTDATA,744,apcupsd,$(sysconfdir)/rc.d/init.d)
+	$(call MKDIR,/etc/rc.d/init.d)
+	$(call INSTDATA,744,apcupsd,/etc/rc.d/init.d)
    # link new rc script (if not doing a DESTDIR install)
-	$(call CHKCFG,add,$(sysconfdir)/rc.d/init.d/apcupsd)
+	$(call CHKCFG,add,/etc/rc.d/init.d/apcupsd)
 	$(V)if cp -fR /etc/rc.d/init.d/halt $(DESTDIR)/etc/rc.d/init.d/halt.old  && \
           awk -f awkhaltprog $(DESTDIR)/etc/rc.d/init.d/halt.old >$(DESTDIR)/etc/rc.d/init.d/halt && \
           chmod 744 $(DESTDIR)/etc/rc.d/init.d/halt ; then true ; else \
