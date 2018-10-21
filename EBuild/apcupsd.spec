@@ -43,14 +43,14 @@ Some features depend on what UPS model you have (simple or smart).
 EOF
 
 %build
-cd /code/EBuild && %{__make} Release_Linux32
+cd %{_ebuild_root} && %{__make} Release_Linux32
 
 %install
 %{__rm} -rf %{buildroot}
 mkdir -p %{buildroot}
-cp -a /code/EBuild/Release_Linux32/etc %{buildroot}
-cp -a /code/EBuild/Release_Linux32/sbin %{buildroot}
-cp -a /code/EBuild/Release_Linux32/usr %{buildroot}
+cp -a %{_ebuild_root}/Release_Linux32/etc %{buildroot}
+cp -a %{_ebuild_root}/Release_Linux32/sbin %{buildroot}
+cp -a %{_ebuild_root}/Release_Linux32/usr %{buildroot}
 %{__install} -Dp -m0644 apcupsd.logrotate %{buildroot}%{_sysconfdir}/logrotate.d/apcupsd
 
 %clean
