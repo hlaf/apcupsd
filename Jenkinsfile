@@ -29,8 +29,11 @@ node('docker-slave') {
   }
 
   stage('Deploy to Yum repo') {
-    sh "curl -v --user 'USER:PASS' --upload-file ./EBuild/apcupsd-3.14.14-1.el6.i386.rpm ${yum_repo_url}/i386/apcupsd-3.14.14-1.el6.i386.rpm"
+    withCredentials([usernamePassword(credentialsId: 'nexus-credentials',
+                                      usernameVariable: 'USERNAME',
+                                      passwordVariable: 'PASSWORD')]) {
+      sh "curl -v --user '${USERNAME}:${PASSWORD}' --upload-file ./EBuild/apcupsd-3.14.14-1.el6.i386.rpm ${yum_repo_url}/i386/apcupsd-3.14.14-1.el6.i386.rpm"
+    }
   }
 
 }
-
