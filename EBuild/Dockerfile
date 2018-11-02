@@ -11,7 +11,7 @@ RUN yum install -y glibc-devel.i686 libgcc.i686 libstdc++-devel.i686 ncurses-dev
 RUN yum install -y glibc-devel.x86_64 && yum clean all
 
 # Install RPM development tools
-RUN yum install -y rpm-build rpmdevtools rpmlint && yum clean all
+RUN yum install -y rpm-build rpmdevtools rpmlint hunspell-en && yum clean all
 
 # Install tools required for building apcupsd
 RUN yum install -y upstart sysvinit-tools man util-linux-ng && yum clean all
