@@ -8,7 +8,7 @@
 Summary: APC UPS power control daemon
 Name: apcupsd
 Version: 3.14.14
-Release: 1%{?dist}
+Release: 2%{?dist}
 License: GPL
 Group: System Environment/Daemons
 URL: http://www.apcupsd.com/
