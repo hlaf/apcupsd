@@ -35,6 +35,13 @@ node('docker-slave') {
     sh 'ls ./EBuild'
   }
 
+  stage('Verify RPM') {
+    sh "docker run -t --volumes-from $DOCKER_CONTAINER_ID $build_tools_image \
+      /bin/sh -c 'cd ${env.WORKSPACE}/EBuild && \
+                  rpmlint *.rpm'\
+    "
+  }
+
   stage('Deploy to Yum repo') {
     withCredentials([usernamePassword(credentialsId: 'nexus-credentials',
                                       usernameVariable: 'USERNAME',
