@@ -38,7 +38,7 @@ node('docker-slave') {
   stage('Verify RPM') {
     sh "docker run -t --volumes-from $DOCKER_CONTAINER_ID $build_tools_image \
       /bin/sh -c 'cd ${env.WORKSPACE}/EBuild && \
-                  rpmlint *.rpm'\
+                  rpmlint *.rpm -f .rpmlint.waivers'\
     "
   }
 
