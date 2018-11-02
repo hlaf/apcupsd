@@ -24,7 +24,7 @@ Requires: perl
 Apcupsd can be used for controlling most APC UPSes. During a power failure,
 apcupsd will inform the users about the power failure and that a shutdown
 may occur. If power is not restored, a system shutdown will follow when the
-battery is exausted, a timeout (seconds) expires, or the battery runtime
+battery is exhausted, a timeout (seconds) expires, or the battery run-time
 expires based on internal APC calculations determined by power consumption
 rates. If the power is restored before one of the above shutdown conditions
 is met, apcupsd will inform users about this fact.
@@ -80,7 +80,10 @@ fi
 %{_datadir}/hal/fdi/policy/20thirdparty/80-apcupsd-ups-policy.fdi
 
 %changelog
-* Fri Nov 02 2018 Henrique Lindgren <henriquelindgren@gmail.com> - 3.14.14-1
+* Fri Nov 02 2018 Henrique Lindgren <henriquelindgren@gmail.com> - 3.14.14-2
+- Fixed spelling errors in the package description.
+
+* Thu Nov 01 2018 Henrique Lindgren <henriquelindgren@gmail.com> - 3.14.14-1
 - new upstream release
 
 * Sat Jan 21 2012 David Hrbáč <david@hrbac.cz> - 3.14.10-1
