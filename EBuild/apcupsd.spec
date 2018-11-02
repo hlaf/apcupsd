@@ -80,6 +80,9 @@ fi
 %{_datadir}/hal/fdi/policy/20thirdparty/80-apcupsd-ups-policy.fdi
 
 %changelog
+* Fri Nov 02 2018 Henrique Lindgren <henriquelindgren@gmail.com> - 3.14.14-1
+- new upstream release
+
 * Sat Jan 21 2012 David Hrbáč <david@hrbac.cz> - 3.14.10-1
 - new upstream release
 
