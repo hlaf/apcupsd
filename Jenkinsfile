@@ -22,7 +22,7 @@ node('docker-slave') {
       /bin/sh -c 'cd ${env.WORKSPACE}/EBuild && \
         rpmdev-setuptree && \
         ln -s ${env.WORKSPACE}/RECEIVED/apcupsd-3.14.14.tar.gz /root/rpmbuild/SOURCES && \
-        rpmbuild -ba --define \"_ebuild_root ${env.WORKSPACE}/EBuild\" apcupsd.spec --target i386 && \
+        rpmbuild -bb --define \"_ebuild_root ${env.WORKSPACE}/EBuild\" apcupsd.spec --target i386 && \
         mv /root/rpmbuild/RPMS/i386/*.rpm .'\
     "
     sh 'ls ./EBuild'
