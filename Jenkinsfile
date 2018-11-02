@@ -17,6 +17,13 @@ node('docker-slave') {
     def customImage = docker.build(build_tools_image, './EBuild')
   }
 
+  stage('Verify SPEC file') {
+    sh "docker run -t --volumes-from $DOCKER_CONTAINER_ID $build_tools_image \
+      /bin/sh -c 'cd ${env.WORKSPACE}/EBuild && \
+                  rpmlint apcupsd.spec'\
+    "
+  }
+
   stage('Build RPM') {
     sh "docker run -t --volumes-from $DOCKER_CONTAINER_ID $build_tools_image \
       /bin/sh -c 'cd ${env.WORKSPACE}/EBuild && \
