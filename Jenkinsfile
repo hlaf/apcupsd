@@ -5,6 +5,7 @@
 repo_creds = 'emt-jenkins-git-ssh'
 repo_url = 'git@github.com:hlaf/apcupsd.git'
 yum_repo_url = 'http://nexus.emtegrity.com:8082/repository/emt-yum-3rdparty'
+version = '3.14.14-2'
 
 node('docker-slave') {
   
@@ -46,7 +47,7 @@ node('docker-slave') {
     withCredentials([usernamePassword(credentialsId: 'nexus-credentials',
                                       usernameVariable: 'USERNAME',
                                       passwordVariable: 'PASSWORD')]) {
-      sh "curl -v --user '${USERNAME}:${PASSWORD}' --upload-file ./EBuild/apcupsd-3.14.14-1.el6.i386.rpm ${yum_repo_url}/i386/apcupsd-3.14.14-1.el6.i386.rpm"
+      sh "curl -v --user '${USERNAME}:${PASSWORD}' --upload-file ./EBuild/apcupsd-${version}.el6.i386.rpm ${yum_repo_url}/i386/apcupsd-${version}.el6.i386.rpm"
     }
   }
 
