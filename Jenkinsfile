@@ -47,7 +47,7 @@ node('docker-slave') {
     withCredentials([usernamePassword(credentialsId: 'nexus-credentials',
                                       usernameVariable: 'USERNAME',
                                       passwordVariable: 'PASSWORD')]) {
-      sh "curl -v --user '${USERNAME}:${PASSWORD}' --upload-file ./EBuild/apcupsd-${version}.el6.i386.rpm ${yum_repo_url}/i386/apcupsd-${version}.el6.i386.rpm"
+      sh "curl --fail -v --user '${USERNAME}:${PASSWORD}' --upload-file ./EBuild/apcupsd-${version}.el6.i386.rpm ${yum_repo_url}/i386/apcupsd-${version}.el6.i386.rpm"
     }
   }
 
