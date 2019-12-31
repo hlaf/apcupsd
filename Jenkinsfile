@@ -44,10 +44,14 @@ node('docker-slave') {
   }
 
   stage('Deploy to Yum repo') {
-    withCredentials([usernamePassword(credentialsId: 'nexus-credentials',
-                                      usernameVariable: 'USERNAME',
-                                      passwordVariable: 'PASSWORD')]) {
-      sh "curl --fail -v --user '${USERNAME}:${PASSWORD}' --upload-file ./EBuild/apcupsd-${version}.el6.i386.rpm ${yum_repo_url}/i386/apcupsd-${version}.el6.i386.rpm"
+    if (isBuildReplayed() || isBuildStartedByTimer()) {
+      echo "Skipping release"
+    } else {
+      withCredentials([usernamePassword(credentialsId: 'nexus-credentials',
+                                        usernameVariable: 'USERNAME',
+                                        passwordVariable: 'PASSWORD')]) {
+         sh "curl --fail -v --user '${USERNAME}:${PASSWORD}' --upload-file ./EBuild/apcupsd-${version}.el6.i386.rpm ${yum_repo_url}/i386/apcupsd-${version}.el6.i386.rpm"
+      }
     }
   }
 
