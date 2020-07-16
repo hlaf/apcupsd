@@ -2,7 +2,7 @@
 
 @Library('emt-pipeline-lib@master') _
 
-repo_creds = 'emt-jenkins-git-ssh'
+repo_creds = 'emt-jenkins-github-ssh'
 repo_url = 'git@github.com:hlaf/apcupsd.git'
 yum_repo_url = 'http://nexus.emtegrity.com:8082/repository/emt-yum-3rdparty'
 version = '3.14.14-2'
