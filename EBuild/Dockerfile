@@ -1,7 +1,10 @@
-FROM centos:6
+FROM centos:6.10
+
+# Use the CentOS Vault repository
+COPY CentOS-Base.repo /etc/yum.repos.d/CentOS-Base.repo
 
 # Update the image with the latest packages
-# RUN yum update -y; yum clean all
+RUN yum update -y; yum clean all
 
 # Install the 32-bit gcc development tools
 RUN yum install -y glibc-devel.i686 libgcc.i686 libstdc++-devel.i686 ncurses-devel.i686 gcc gcc-c++ \
