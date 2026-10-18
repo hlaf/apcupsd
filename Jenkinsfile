@@ -7,7 +7,7 @@ repo_url = 'git@github.com:hlaf/apcupsd.git'
 yum_repo_url = 'http://nexus.emtegrity.com:8082/repository/emt-yum-3rdparty'
 version = '3.14.14-2'
 
-node('docker-slave') {
+node('docker-cloud-agent') {
   
   stage('Checkout') {
 	checkoutFromGit(repo_creds, repo_url)
